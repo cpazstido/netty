@@ -15,9 +15,12 @@
  */
 package io.netty.example.echo;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Handler implementation for the echo server.
@@ -27,6 +30,16 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        ByteBuf buf = ((ByteBuf)msg).copy();
+
+        byte[] req = new byte[buf.readableBytes()];
+        buf.readBytes(req);
+        try {
+            String body = new String(req, "UTF-8");
+            System.out.println(body);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         ctx.write(msg);
     }
 
