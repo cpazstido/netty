@@ -736,6 +736,11 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
             addTask(task);
         } else {
             startThread();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             addTask(task);
             if (isShutdown() && removeTask(task)) {
                 reject();
