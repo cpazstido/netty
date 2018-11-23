@@ -1291,7 +1291,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
             ctx.fireChannelActive();
 
-            readIfIsAutoRead();
+            readIfIsAutoRead();//会设置selectkey的值
         }
 
         @Override

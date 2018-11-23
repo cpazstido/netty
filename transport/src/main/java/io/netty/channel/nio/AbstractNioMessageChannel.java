@@ -66,7 +66,7 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
             try {
                 try {
                     for (;;) {
-                        int localRead = doReadMessages(readBuf);
+                        int localRead = doReadMessages(readBuf);//ServerSocket的accept
                         if (localRead == 0) {
                             break;
                         }

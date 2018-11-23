@@ -36,7 +36,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 public final class EchoServer {
 
     static final boolean SSL = System.getProperty("ssl") != null;
-    static final int PORT = Integer.parseInt(System.getProperty("port", "1234"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", "12345"));
 
     public static void main(String[] args) throws Exception {
         // Configure SSL.
@@ -49,12 +49,13 @@ public final class EchoServer {
         }
 
         // Configure the server.
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);//构造函数创建线程 创建一个接受线程，组成一个boss线程池
+        EventLoopGroup workerGroup = new NioEventLoopGroup();//构造函数创建线程，没指定，默认创建Num(cpu)*2个线程组成一个worker线程池
+
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
+             .channel(NioServerSocketChannel.class)//Nio的构造函数创建unsafe和pipepline
              .option(ChannelOption.SO_BACKLOG, 100)
              .handler(new LoggingHandler(LogLevel.INFO))
              .childHandler(new ChannelInitializer<SocketChannel>() {
